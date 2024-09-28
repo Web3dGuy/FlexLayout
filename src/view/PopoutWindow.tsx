@@ -24,6 +24,7 @@ export const PopoutWindow = (props: React.PropsWithChildren<IPopoutWindowProps>)
     const [content, setContent] = React.useState<HTMLElement | undefined>(undefined);
     // map from main docs style -> this docs equivalent style
     const styleMap = new Map<HTMLElement, HTMLElement>();     
+    const popOut = new tWindow('popOutWindow');
 
     React.useLayoutEffect(() => {
         if (!popoutWindow.current) { // only create window once, even in strict mode
@@ -31,7 +32,6 @@ export const PopoutWindow = (props: React.PropsWithChildren<IPopoutWindowProps>)
             const rect = layoutWindow.rect;
             console.log("Window ID:", windowId, "Window URL: ", url);
             popoutWindow.current = window.open(url, windowId, `left=${rect.x},top=${rect.y},width=${rect.width},height=${rect.height}`);
-            const popOut = new tWindow('popOutWindow');
             const webview = new Webview(popOut, 'popOutWindow', {
                 url: 'https://github.com/tauri-apps/tauri',
                 x: rect.x,
