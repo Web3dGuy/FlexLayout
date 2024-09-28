@@ -3,7 +3,6 @@ import { createPortal } from "react-dom";
 import { CLASSES } from "../Types";
 import { LayoutInternal } from "./Layout";
 import { LayoutWindow } from "../model/LayoutWindow";
-import { invoke } from 'C:/Users/hr737/Workspace/FlexLayout/node_modules/@tauri-apps/api/core';
 
 /** @internal */
 export interface IPopoutWindowProps {
@@ -26,29 +25,8 @@ export const PopoutWindow = (props: React.PropsWithChildren<IPopoutWindowProps>)
         if (!popoutWindow.current) { // only create window once, even in strict mode
             const windowId = layoutWindow.windowId;
             const rect = layoutWindow.rect;
-            // Invoke a Rust function to create the window
-            invoke('create_window', { 
-                id: windowId, 
-                title: title, 
-                url: url, 
-                width: rect.width, 
-                height: rect.height, 
-                x: rect.x, 
-                y: rect.y 
-            }).then((windowHandle: any) => {
-                if (windowHandle) {
-                    // Assuming the handle returned can be used similarly to a Window object for type consistency
-                    onSetWindow(layoutWindow, windowHandle);
-                    // You might need additional logic here if `windowHandle` differs from a Window object
-                } else {
-                    console.error('Failed to create window from Rust backend');
-                    onCloseWindow(layoutWindow);
-                }
-            }).catch((error) => {
-                console.error('Error invoking create_window:', error);
-                onCloseWindow(layoutWindow);
-            });
-            popoutWindow.current = window.open(url, windowId, `left=${rect.x},top=${rect.y},width=${rect.width},height=${rect.height}`);
+            
+            popoutWindow.current = window.open(url, windowId, `left=${rect.x},top=${rect.y},width=${rect.width},height=${rect.height},toolbar=no,location=no,menubar=no,status=no`);
 
             if (popoutWindow.current) {
                 layoutWindow.window = popoutWindow.current;
@@ -170,5 +148,3 @@ function copyStyle(popoutDoc: Document, element: HTMLElement, styleMap: Map<HTML
         }
     }
 }
-
-
