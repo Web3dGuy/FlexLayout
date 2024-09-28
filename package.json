@@ -45,6 +45,8 @@
         "extends": "react-app"
     },
     "devDependencies": {
+        "@tauri-apps/api": "2.0.0-rc.4",
+        "@tauri-apps/cli": "^2.0.0-rc.13",
         "@emotion/react": "^11.13.3",
         "@emotion/styled": "^11.13.0",
         "@fontsource/roboto": "^5.0.14",
