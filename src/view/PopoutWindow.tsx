@@ -34,16 +34,19 @@ export const PopoutWindow = (props: React.PropsWithChildren<IPopoutWindowProps>)
             const popOut = new tWindow('popOutWindow');
             const webview = new Webview(popOut, 'popOutWindow', {
                 url: 'https://github.com/tauri-apps/tauri',
-                x: 0,
-                y: 0, 
-                width: 800,
-                height: 600,
+                x: rect.x,
+                y: rect.y,
+                width: rect.width,
+                height: rect.height,
               });
               webview.once('tauri://created', function () {
                 // webview successfully created
+                console.log("Tauri window created");
+
                });
                webview.once('tauri://error', function (e) {
                 // an error happened creating the webview
+                console.log("error: ", e);
                });
                
             if (popoutWindow.current) {
