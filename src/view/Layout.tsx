@@ -29,6 +29,7 @@ import { copyInlineStyles, enablePointerOnIFrames, isDesktop, isSafari } from ".
 import { LayoutWindow } from "../model/LayoutWindow";
 import { TabButtonStamp } from "./TabButtonStamp";
 import { SizeTracker } from "./SizeTracker";
+import { WebviewWindow } from "C:/Users/hr737/Workspace/FlexLayout/node_modules/@tauri-apps/api/webviewWindow";
 
 export interface ILayoutProps {
     /** the model for this layout */
@@ -853,7 +854,7 @@ export class LayoutInternal extends React.Component<ILayoutInternalProps, ILayou
         this.doAction(Actions.closeWindow(windowLayout.windowId));
     };
 
-    onSetWindow = (windowLayout: LayoutWindow, window: Window) => {
+    onSetWindow = (windowLayout: LayoutWindow, window: Window | WebviewWindow | null) => {
     };
 
     getScreenRect(inRect: Rect) {
