@@ -4,9 +4,6 @@ import { CLASSES } from "../Types";
 import { LayoutInternal } from "./Layout";
 import { LayoutWindow } from "../model/LayoutWindow";
 
-import { Window as tWindow } from "C:/Users/hr737/Workspace/FlexLayout/node_modules/@tauri-apps/api/window"
-import { Webview } from "C:/Users/hr737/Workspace/FlexLayout/node_modules/@tauri-apps/api/webview"
-
 /** @internal */
 export interface IPopoutWindowProps {
     title: string;
@@ -19,36 +16,18 @@ export interface IPopoutWindowProps {
 
 /** @internal */
 export const PopoutWindow = (props: React.PropsWithChildren<IPopoutWindowProps>) => {
-
     const { title, layout, layoutWindow, url, onCloseWindow, onSetWindow, children } = props; const popoutWindow = React.useRef<Window | null>(null);
     const [content, setContent] = React.useState<HTMLElement | undefined>(undefined);
     // map from main docs style -> this docs equivalent style
-    const styleMap = new Map<HTMLElement, HTMLElement>();     
-    const popOut = new tWindow('popOutWindow');
+    const styleMap = new Map<HTMLElement, HTMLElement>();       
 
     React.useLayoutEffect(() => {
         if (!popoutWindow.current) { // only create window once, even in strict mode
             const windowId = layoutWindow.windowId;
             const rect = layoutWindow.rect;
-            console.log("Window ID:", windowId, "Window URL: ", url);
+            
             popoutWindow.current = window.open(url, windowId, `left=${rect.x},top=${rect.y},width=${rect.width},height=${rect.height}`);
-            const webview = new Webview(popOut, 'popOutWindowWebview', {
-                url: url,
-                x: rect.x,
-                y: rect.y,
-                width: rect.width,
-                height: rect.height,
-              });
-              webview.once('tauri://created', function () {
-                // webview successfully created
-                console.log("Tauri window created");
 
-               });
-               webview.once('tauri://error', function (e) {
-                // an error happened creating the webview
-                console.log("error: ", e);
-               });
-               
             if (popoutWindow.current) {
                 layoutWindow.window = popoutWindow.current;
                 onSetWindow(layoutWindow, popoutWindow.current);
